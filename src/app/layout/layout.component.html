@@ -1,0 +1,52 @@
+<mat-toolbar>
+    Gratitude
+
+    <button mat-icon-button *ngIf="sidenav.mode == 'over'" (click)="sideNav.toggle()">
+        <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
+        <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+    </button>
+
+    <div fxFlex fxLayoutAlign="flex-end center">
+        <button mat-icon-button>
+            <mat-icon>notifications</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon>account_circle</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+    <mat-sidenav #sidenav="matSidenav">
+        <mat-divider></mat-divider>
+
+        <button color="white" mat-button class="menu-button" routerLink="dashboard">
+            <mat-icon>home</mat-icon>
+            <span>Your Notice</span>
+        </button>
+        <button color="white" mat-button class="menu-button" routerLink="add-order">
+            <mat-icon>home</mat-icon>
+            <span>Notice Board</span>
+        </button>
+        <button color="white" mat-button class="menu-button" routerLink="/profile">
+            <mat-icon>person</mat-icon>
+            <span>Groups</span>
+        </button>
+
+        <mat-divider></mat-divider>
+        Search
+        <div class="search-bar" style="border-color: whitesmoke; border-radius: 1px;border-style: dashed;">
+
+
+        </div>
+
+    </mat-sidenav>
+
+
+
+    <mat-sidenav-content>
+        <div class="content mat-elevation-z4">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
