@@ -211,7 +211,7 @@ build_image() {
     if sudo docker images | awk '{print $1}' | grep -q $imagename; then
         echo "Image already exists, updating..."
         # Stop and remove the existing container
-        current_dir = $(basename "$PWD")
+        current_dir = $("$PWD")
         sudo docker stop $current_dir-container
         sudo docker rm $current_dir-container
         #pull the latest image
