@@ -78,57 +78,44 @@ check_project() {
 
 # Will create simple pre commit for every type of project.(Very simple .pre-commit hooks are used you can install flask pretify also.)
 PreCommitHooks() {
-
-    # if ! type "pre-commit" >/dev/null; then
-    #     echo "Installing pre-commit..."
-       
-
-    if [ -f ".git/hooks/pre-commit" ]; then
-        echo "pre-commit hook already exists, skipping creation."
-    else
-
-            if [ -f "package.json" ]; then
-                echo "This is a Node.js project."
-                echo "Creating pre-commit hook to run tests..."
-                echo "npm test --no-watch --browers ChromeHeadless" >.git/hooks/pre-commit
-                chmod +x .git/hooks/pre-commit
-
-            elif [ -f "manage.py" ]; then
-                echo "This is a Django project."
-
-                echo "Creating pre-commit hook to run tests..."
-                echo "python3 manage.py test" >.git/hooks/pre-commit
-                chmod +x .git/hooks/pre-commit
-
-            elif [ -f "docker-compose.yml" ]; then
-                echo "This is a Docker Compose project"
-                echo "Creating pre-commit hook to run tests..."
-                echo "docker-compose up --build" > .git/hooks/pre-commit
-
-              
-               
-                chmod +x .git/hooks/pre-commit
-
-            elif [ -f "composer.json" ]; then
-                echo "This is a PHP project."
-                echo "Creating pre-commit hook to run tests..."
-                echo "phpunit" >.git/hooks/pre-commit
-                chmod +x .git/hooks/pre-commit
-                
-            elif jq '.dependencies | has("@angular/core")' package.json; then
-                echo "This is an Angular project."
-                export CHROME_BIN=/usr/bin/chromium-browser
-                echo "Creating pre-commit hook to run tests..."
-                echo "ng test --no-watch --browsers ChromeHeadless" > .git/hooks/pre-commit
-                chmod +x .git/hooks/pre-commit
-
-
-            else
-                echo "Could not determine project type."
-            fi
+    if ! type "pre-commit" >/dev/null; then
+        echo "Installing pre-commit..."
+        if [ -f "package.json" ]; then
+            echo "This is a Node.js project."
+            echo "Creating pre-commit hook to run tests..."
+            echo "npm test --no-watch --browers ChromeHeadless" > .git/hooks/pre-commit
+            chmod +x .git/hooks/pre-commit
+        elif [ -f "manage.py" ]; then
+            echo "This is a Django project."
+            echo "Creating pre-commit hook to run tests..."
+            echo "python3 manage.py test" > .git/hooks/pre-commit
+            chmod +x .git/hooks/pre-commit
+        elif [ -f "docker-compose.yml" ]; then
+            echo "This is a Docker Compose project"
+            echo "Creating pre-commit hook to run tests..."
+            echo "docker-compose up --build" > .git/hooks/pre-commit
+            chmod +x .git/hooks/pre-commit
+        elif [ -f "composer.json" ]; then
+            echo "This is a PHP project."
+            echo "Creating pre-commit hook to run tests..."
+            echo "phpunit" > .git/hooks/pre-commit
+            chmod +x .git/hooks/pre-commit
+        elif jq '.dependencies | has("@angular/core")' package.json; then
+            echo "This is an Angular project."
+            export CHROME_BIN=/usr/bin/chromium-browser
+            echo "Creating pre-commit hook to run tests..."
+            echo "ng test --no-watch --browsers ChromeHeadless" > .git/hooks/pre-commit
+            chmod +x .git/hooks/pre-commit
+        else
+            echo "Could not determine project type."
+        fi
+    else 
+        if [ -f ".git/hooks/pre-commit" ]; then
+            echo "pre-commit hook already exists, skipping creation."
+        fi
     fi
-
 }
+
 
 #Creates only and image will not create a docker-compose file.
 
