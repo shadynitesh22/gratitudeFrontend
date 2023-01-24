@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AddstickyComponent } from './addsticky.component';
 import { RouterModule, Routes } from '@angular/router';
 import { StickyModule } from 'src/app/modules/sticky/sticky.module';
+import { MaterialModule } from 'src/app/material/material.module';
 
 
 const routes: Routes = [
@@ -21,7 +22,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    StickyModule
+    StickyModule,
+    MaterialModule
   ]
 })
 export class AddstickyModule { }

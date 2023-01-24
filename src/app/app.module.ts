@@ -14,16 +14,11 @@ import { LayoutModule } from './layout/layout.module';
 
 const routes: Routes = [
   {
-    path : 'sample',
+    path : '',
     component : LayoutComponent,
-    loadChildren :() => import('./modules/sample/sample.module').then(m => m.SampleModule)
+    loadChildren :() => import('./modules/addsticky/addsticky.module').then(m => m.AddstickyModule)
   },
-  {
-    path : 'add-sticky',
-    component : LayoutComponent,
-    loadChildren :() => import('./modules/addsticky/addsticky.module').then(m => m.AddstickyModule
-      )
-  }
+
 ]
 
 

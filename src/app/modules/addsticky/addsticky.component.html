@@ -1,14 +1,19 @@
+
 <div class="container">
     <div class="row">
   
-  <button type="button" class="btn btn-info" (click)="addNote($event)">Add Note</button>
-  
-  <button type="button" class="btn btn-danger" (click)="Delete(noteIndex)">Delete note</button>
-  
+      <button matTooltip="Add notes"  (click)="addNote($event)" mat-icon-button>
+        <mat-icon>receipt</mat-icon>
+    </button>
+
+    <button (click)="Delete(noteIndex)" matTooltip="Delete Notes" mat-icon-button>
+      <mat-icon>delete</mat-icon>
+    </button>
+
     </div>
+    
     <div class="row">
-  
-      
+ 
   
   <app-sticky  *ngFor="let note of notes; let i=index" (addnote)="addNote($event)" (noteAdded)="onAddNote($event)" (removeNote)="onDeleteNote($event)" [index]="i"></app-sticky>
   

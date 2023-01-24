@@ -83,58 +83,50 @@ PreCommitHooks() {
     #     echo "Installing pre-commit..."
        
 
-    # elif [ -f ".git/hooks/pre-commit" ]; then
-    #     echo "pre-commit hook already exists, skipping creation."
-    # else
-
-    if [ -f "package.json" ]; then
-        echo "This is a Node.js project."
-        echo "Creating pre-commit hook to run tests..."
-        echo "npm test" >.git/hooks/pre-commit
-        chmod +x .git/hooks/pre-commit
-
-    elif [ -f "manage.py" ]; then
-        echo "This is a Django project."
-
-        echo "Creating pre-commit hook to run tests..."
-        echo "python3 manage.py test" >.git/hooks/pre-commit
-        chmod +x .git/hooks/pre-commit
-
-    elif [ -f "docker-compose.yml" ]; then
-        echo "This is a Docker Compose project"
-        echo "Creating pre-commit hook to run tests..."
-        echo "docker-compose up --build" > .git/hooks/pre-commit
-
-      
-       
-        chmod +x .git/hooks/pre-commit
-
-    elif [ -f "composer.json" ]; then
-        echo "This is a PHP project."
-        echo "Creating pre-commit hook to run tests..."
-        echo "phpunit" >.git/hooks/pre-commit
-        chmod +x .git/hooks/pre-commit
-        
-    elif jq '.dependencies | has("@angular/core")' package.json; then
-        echo "This is an Angular project."
-
-        export CHROME_BIN=/usr/bin/chromium-browser
-
-        echo "Creating pre-commit hook to run tests..."
-        echo "ng test" > .git/hooks/pre-commit
-        echo "if ng test; then" >> .git/hooks/pre-commit
-        echo "    echo 'Tests passed, proceeding with commit.'" >> .git/hooks/pre-commit
-        echo "else" >> .git/hooks/pre-commit
-        echo "    echo 'Tests failed, commit stopped.'" >> .git/hooks/pre-commit
-        echo "    exit 1" >> .git/hooks/pre-commit
-        echo "fi" >> .git/hooks/pre-commit
-        chmod +x .git/hooks/pre-commit
-
-
+    if [ -f ".git/hooks/pre-commit" ]; then
+        echo "pre-commit hook already exists, skipping creation."
     else
-        echo "Could not determine project type."
+
+            if [ -f "package.json" ]; then
+                echo "This is a Node.js project."
+                echo "Creating pre-commit hook to run tests..."
+                echo "npm test --no-watch --browers ChromeHeadless" >.git/hooks/pre-commit
+                chmod +x .git/hooks/pre-commit
+
+            elif [ -f "manage.py" ]; then
+                echo "This is a Django project."
+
+                echo "Creating pre-commit hook to run tests..."
+                echo "python3 manage.py test" >.git/hooks/pre-commit
+                chmod +x .git/hooks/pre-commit
+
+            elif [ -f "docker-compose.yml" ]; then
+                echo "This is a Docker Compose project"
+                echo "Creating pre-commit hook to run tests..."
+                echo "docker-compose up --build" > .git/hooks/pre-commit
+
+              
+               
+                chmod +x .git/hooks/pre-commit
+
+            elif [ -f "composer.json" ]; then
+                echo "This is a PHP project."
+                echo "Creating pre-commit hook to run tests..."
+                echo "phpunit" >.git/hooks/pre-commit
+                chmod +x .git/hooks/pre-commit
+                
+            elif jq '.dependencies | has("@angular/core")' package.json; then
+                echo "This is an Angular project."
+                export CHROME_BIN=/usr/bin/chromium-browser
+                echo "Creating pre-commit hook to run tests..."
+                echo "ng test --no-watch --browsers ChromeHeadless" > .git/hooks/pre-commit
+                chmod +x .git/hooks/pre-commit
+
+
+            else
+                echo "Could not determine project type."
+            fi
     fi
-    # fi
 
 }
 
@@ -152,6 +144,7 @@ dockerize_project() {
         echo "EXPOSE 3000" >>Dockerfile
         echo "CMD [\"npm\", \"start\"]" >>Dockerfile
         echo "Dockerfile created for Node.js project."
+
 
     elif [ -f "manage.py" ]; then
         echo "This is a Django project. Creating Dockerfile..."
@@ -193,6 +186,115 @@ dockerize_project() {
 
 }
 
+productionSettings(){
+mkdir .github/workflows
+touch .github/workflows/dcoker-publish.yml
+echo "name: Docker
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  schedule:
+    - cron: '20 11 * * *'
+  push:
+    branches: [ "main" ]
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Install the cosign tool except on PR
+      # https://github.com/sigstore/cosign-installer
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@f3c664df7af409cb4873aa5068053ba9d61a57b6 #v2.6.0
+        with:
+          cosign-release: 'v1.11.0'
+
+
+      # Workaround: https://github.com/docker/build-push-action/issues/461
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+
+      # Sign the resulting Docker image digest except on PRs.
+      # This will only write to the public Rekor transparency log when the Docker
+      # repository is public to avoid leaking data.  If you would like to publish
+      # transparency data even for private images, pass --force to cosign below.
+      # https://github.com/sigstore/cosign
+      - name: Sign the published Docker image
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+        # This step uses the identity token to provision an ephemeral certificate
+        # against the sigstore community Fulcio instance.
+        run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}"> dcoker-publish.yml
+
+
+
+
+
+
+}
+
+
+
 # Will build and tag the image here.
 
 build_image() {
@@ -211,7 +313,7 @@ build_image() {
     if sudo docker images | awk '{print $1}' | grep -q $imagename; then
         echo "Image already exists, updating..."
         # Stop and remove the existing container
-        current_dir = $("$PWD")
+        current_dir = $(basename"$(pwd)")
         sudo docker stop $current_dir-container
         sudo docker rm $current_dir-container
         #pull the latest image
@@ -222,8 +324,9 @@ build_image() {
         echo "Building new image..."
         sudo docker build -t $imagename:$version .
         # Build new container
-        current_dir = $(basename "$PWD")
+        current_dir = $(basename"$(pwd)")
         sudo docker run --name $current_dir-container -d $imagename:$version
+
     fi
 }
 
@@ -261,13 +364,16 @@ pull_repo() {
 
 push_repo() {
     git add .
-    # PreCommitHooks &
+    PreCommitHooks 
     system_username=$(whoami)
     current_date=$(date +"%d/%m/%Y %T")
     echo "Type Your Commit message:"
     read varname
     git commit -m "by $system_username on $current_date with message:$varname "
     build_image
+    # echo "Do you want to Publish it as a docker package.Y/N"
+    # read answer
+    # if answer \
     echo "Type Your Branch:"
     read Branch
     git push origin $Branch
@@ -338,8 +444,7 @@ if [ $Code = pull ]; then
 [14;10H         | O  O  | | | | | | |  O  O |
 [15;10H         | O  O  | | | | | | |  O  O |
 [16;10H         | O  O  | | | | | | |  O  O |--push push ."\n
-    [17
-    10H | _______I_I_I_I_I_I_I_______ |
+   
         echo ="
 
 [14;45H   O    
