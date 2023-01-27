@@ -1,7 +1,9 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
+import { SharedService } from 'src/app/app.service';
+import { Notes } from 'src/app/modules/sticky/sticky/sticky.model';
 
 @Component({
   selector: 'app-layout',
@@ -9,23 +11,27 @@ import { Router } from '@angular/router';
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent {
-  @ViewChild(MatSidenav)
-  sideNav!: MatSidenav;
 
-
-  constructor(private observer: BreakpointObserver, private router: Router) { }
-
-
-  ngAfterViewInit(): void {
-
-    this.observer.observe(['(max-width: 800px)']).subscribe((result) => {
-      if (result.matches) {
-        this.sideNav.mode = 'over';
-        this.sideNav.close();
-      } else {
-        this.sideNav.mode = 'side';
-        this.sideNav.open();
+  notes: Notes[] = [];
+  constructor(private observer: BreakpointObserver, private router: Router,private appService: SharedService) {
+    
+    this.appService.currentNote.subscribe((note: Notes|null) => {
+      if (note) {
+        this.notes.push(note);
       }
     });
   }
+
+
+addNote(note: Notes) {
+this.appService.setNote(note);
+console.log("Note added.");
+}
+
+delete(index: number) {
+this.notes.splice(index, 1);
+}
+
+
+
 }

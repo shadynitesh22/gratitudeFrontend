@@ -78,8 +78,14 @@ check_project() {
 
 # Will create simple pre commit for every type of project.(Very simple .pre-commit hooks are used you can install flask pretify also.)
 PreCommitHooks() {
+
     if ! type "pre-commit" >/dev/null; then
         echo "Installing pre-commit..."
+    fi
+
+    if [ -d ".git" ]; then
+        echo "Creating pre-commit hook in .git/hooks"
+        mkdir -p .git/hooks
         if [ -f "package.json" ]; then
             echo "This is a Node.js project."
             echo "Creating pre-commit hook to run tests..."
@@ -100,8 +106,7 @@ PreCommitHooks() {
             echo "Creating pre-commit hook to run tests..."
             echo "phpunit" > .git/hooks/pre-commit
             chmod +x .git/hooks/pre-commit
-        elif jq '.dependencies | has("@angular/core")' package.json; then
-            echo "This is an Angular project."
+        elif jq '.dependencies | has("@angular/core")' package.json && echo "This is an Angular project." || echo "jq command failed"; then
             export CHROME_BIN=/usr/bin/chromium-browser
             echo "Creating pre-commit hook to run tests..."
             echo "ng test --no-watch --browsers ChromeHeadless" > .git/hooks/pre-commit
@@ -109,10 +114,8 @@ PreCommitHooks() {
         else
             echo "Could not determine project type."
         fi
-    else 
-        if [ -f ".git/hooks/pre-commit" ]; then
-            echo "pre-commit hook already exists, skipping creation."
-        fi
+    else
+        echo "This is not a git repository"
     fi
 }
 
@@ -326,30 +329,88 @@ pull_repo() {
     read branch
     git pull origin $branch
     if [ $? -ne 0 ]; then
-        echo "There were merge conflicts. Please resolve them before committing."
-        git status
-        echo "Type the branch you want to merge:"
-        read merge_branch
-        git merge $merge_branch
+        git pull origin $branch --rebase
         if [ $? -ne 0 ]; then
-            echo "Merging failed, please resolve conflicts and try again."
-        else
-            git add .
-            system_username=$(whoami)
-            current_date=$(date +"%d/%m/%Y %T")
-            echo "Type Your Commit message:"
-            read varname
-            remote_url=$(git remote -v | grep -m1 "^origin" | awk '{print $2}')
-            project_name=$(echo $remote_url | awk -F[/:] '{print $4}')
-            git commit -m "by $system_username on $current_date with message:$varname, Project:$project_name"
-            check_project
+            git rebase origin master
+            git mergetool
+            git rebase --continue
+            if [ $? -ne 0 ]; then
+                echo "There were merge conflicts. Resolving conflicts now..."
+                git status
+                git mergetool
+                git add .
+                git rebase --continue
+                if [ $? -ne 0 ]; then
+                    echo "Merging failed, please resolve conflicts and try again."
+                else
+                    echo "Type the branch you want to merge:"
+                    read merge_branch
+                    git diff $branch $merge_branch
+                    echo "Do you want to continue with merging ? (y/n)"
+                    read choice
+                    if [ $choice == "y" ]
+                    then
+                      git merge $merge_branch
+                      if [ $? -ne 0 ]; then
+                            echo "Merging failed, please resolve conflicts and try again."
+                      else
+                            git add .
+                            system_username=$(whoami)
+                            current_date=$(date +"%d/%m/%Y %T")
+                            echo "Type Your Commit message:"
+                            read varname
+                            remote_url=$(git remote -v | grep -m1 "^origin" | awk '{print $2}')
+                            project_name=$(echo $remote_url | awk -F[/:] '{print $4}')
+                            git commit -m "by $system_username on $current_date with message:$varname, Project:$project_name"
+                            check_project
+                      fi
+                    else
+                      echo "Merging Aborted"
+                    fi
+                fi
+            fi
         fi
     fi
-
 }
+
 # Will push the repo use commit formatter use pre commits and will also dockerize and build the image before deployment.
 
 push_repo() {
+    git fetch origin
+    git status
+    
+   if [ "$(git status)" == "Your branch is behind 'origin/<branch>' by <n> commits, and can be fast-forwarded." ]; then
+        echo "Your local branch is behind the remote, please pull before pushing"
+        echo "Type Your origin Branch:"
+        read branch
+        git pull origin $branch
+        if [ $? -ne 0 ]; then
+            git pull origin $branch --rebase
+            git rebase origin master
+            git mergetool
+            git rebase --continue
+            if [ $? -ne 0 ]; then
+                echo "There were merge conflicts. Resolving conflicts now..."
+                git status
+                git mergetool
+                git add .
+                git rebase --continue
+                if [ $? -ne 0 ]; then
+                    echo "Merging failed, please resolve conflicts and try again."
+                else
+                    git add .
+                    system_username=$(whoami)
+                    current_date=$(date +"%d/%m/%Y %T")
+                    echo "Type Your Commit message:"
+                    read varname
+                    remote_url=$(git remote -v | grep -m1 "^origin" | awk '{print $2}')
+                    project_name=$(echo $remote_url | awk -F[/:] '{print $4}')
+                    git commit -m "by $system_username on $current_date with message:$varname, Project:$project_name"
+                    check_project
+                fi
+            fi
+        fi
+    fi
     git add .
     PreCommitHooks 
     system_username=$(whoami)
@@ -358,9 +419,6 @@ push_repo() {
     read varname
     git commit -m "by $system_username on $current_date with message:$varname "
     build_image
-    # echo "Do you want to Publish it as a docker package.Y/N"
-    # read answer
-    # if answer \
     echo "Type Your Branch:"
     read Branch
     git push origin $Branch
@@ -407,12 +465,26 @@ echo "
 init_repo
 
 add_remote
-sudo apt-get install toilet
+if [ "$(uname)" = "Linux" ]; then
+    # install necessary packages for Linux
+    sudo apt-get install toilet
+    sudo apt-get install docker
+    sudo apt-get pre-commit
+    sudo apt install jq
+elif [ "$(uname)" = "Darwin" ]; then
+    # install necessary packages for Mac
+    brew install toilet
+    brew install docker
+    brew install pre-commit
+    brew install jq
+elif [ "$(uname)" = "Windows" ]; then
+    # install necessary packages for Windows
+    choco install toilet
+    choco install docker-desktop
+    choco install pre-commit
+    choco install jq
+fi
 
-sudo apt-get install docker
-
-sudo apt-get pre-commit
-sudo apt install jq
 
 toilet -F metal "Welcome to git shell"
 

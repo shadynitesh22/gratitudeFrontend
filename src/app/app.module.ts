@@ -11,6 +11,7 @@ import { StickyModule } from './modules/sticky/sticky.module';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { LayoutModule } from './layout/layout.module';
+import { SharedService } from './app.service';
 
 const routes: Routes = [
   {
@@ -34,7 +35,7 @@ const routes: Routes = [
     LayoutModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

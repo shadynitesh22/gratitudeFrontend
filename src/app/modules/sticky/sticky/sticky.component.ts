@@ -20,11 +20,15 @@ export class StickyComponent implements OnInit {
    @Output() removeNote =new EventEmitter();
    @Output() addnote =new EventEmitter();
 
+
+
    constructor() {
     this.note = [];
     this.index = 0;
     
     }
+
+
 
   ngOnInit() {
   }

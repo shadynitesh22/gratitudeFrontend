@@ -1,21 +1,34 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SharedService } from 'src/app/app.service';
 import {Notes} from '../sticky/sticky/sticky.model';
 
 @Component({
-  selector: 'app-addsticky',
-  templateUrl: "./addsticky.component.html",
-  styleUrls: ['./addsticky.component.css']
+selector: 'app-addsticky',
+templateUrl: "./addsticky.component.html",
+styleUrls: ['./addsticky.component.css']
 })
-export class AddstickyComponent {
-notes : Notes[] = []
+export class AddstickyComponent implements OnInit {
+notes: Notes[] = []
 
-noteIndex= 0;
-addNote(note:any){
-  this.notes.push(note);
+constructor(private appService:SharedService){ }
+
+ngOnInit(): void {
+this.appService.currentNote.subscribe(value =>{
+if(value){
+this.notes.push(value);
+console.log(value);
+}
+});
 }
 
-Delete(index:any){
-  this.notes.splice(index,1);
+noteIndex= 0;
+
+addNote(note:any){
+this.notes.push(note);
+}
+
+delete(index: number) {
+this.notes.splice(index,1);
 }
 
 onDeleteNote(index:number){

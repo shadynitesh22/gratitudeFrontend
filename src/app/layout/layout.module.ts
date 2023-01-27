@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { StickyModule } from '../modules/sticky/sticky.module';
 import { DropdownDirective } from '../shared/dropdown.directive';
 import { LayoutComponent } from './layout.component';
+import {  SharedService } from '../app.service';
 
 
 
@@ -25,6 +26,7 @@ import { LayoutComponent } from './layout.component';
   exports : [
     LayoutComponent
   ],
+  providers:[SharedService],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class LayoutModule {

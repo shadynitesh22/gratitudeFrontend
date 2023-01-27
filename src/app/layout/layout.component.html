@@ -9,6 +9,15 @@
         <button mat-icon-button>
             <mat-icon>account_circle</mat-icon>
         </button>
+
+      <button matTooltip="Add notes"  (click)="addNote($event)" mat-icon-button>
+        <mat-icon>receipt</mat-icon>
+    </button>
+<!-- 
+    <button (click)="delete(noteIndex)" matTooltip="Delete Notes" mat-icon-button>
+      <mat-icon>delete</mat-icon>
+    </button> -->
+
     </div>
 </mat-toolbar>
 
@@ -18,15 +27,7 @@
 
 
     <mat-sidenav-content>
-        <div class="content mat-elevation-z4">
-            <h1 class="mainheader">Notice board 
-</h1>
-            <mat-divider></mat-divider>
-      <h4 class="mainheader">Today's Notice</h4>
-      <h5 style="text-align:end;margin-right:150px ;">12/2/2023:22:01:24
-
-      </h5>
-    
+        <div class="content mat-elevation-z4">    
             <router-outlet></router-outlet>
         </div>
     </mat-sidenav-content>
