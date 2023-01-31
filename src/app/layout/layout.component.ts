@@ -1,9 +1,8 @@
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+
+import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
-import { SharedService } from 'src/app/app.service';
-import { Notes } from 'src/app/modules/sticky/sticky/sticky.model';
+
+import { SharedService } from '../app.service';
 
 @Component({
   selector: 'app-layout',
@@ -11,27 +10,30 @@ import { Notes } from 'src/app/modules/sticky/sticky/sticky.model';
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent {
+  @ViewChild(MatSidenav)
+  sideNav!: MatSidenav;
 
-  notes: Notes[] = [];
-  constructor(private observer: BreakpointObserver, private router: Router,private appService: SharedService) {
-    
-    this.appService.currentNote.subscribe((note: Notes|null) => {
-      if (note) {
-        this.notes.push(note);
-      }
-    });
+
+  constructor(public stickyService: SharedService) { }
+
+  ngAfterViewInit(): void {
+    // this.stickyService.noteAdded.subscribe(notes => {
+    //   console.log(notes);
+    // });
+
+    // this.stickyService.noteDeleted.subscribe((index: any) => {
+    //   console.log(index);
+    // });
   }
 
 
-addNote(note: Notes) {
-this.appService.setNote(note);
-console.log("Note added.");
+  addNote(note: any) {
+    this.stickyService.addNote(note);
+    console.log(note)
+  }
+
+  delete(index: any) {
+    this.stickyService.deleteNote(index);
+  }
 }
 
-delete(index: number) {
-this.notes.splice(index, 1);
-}
-
-
-
-}

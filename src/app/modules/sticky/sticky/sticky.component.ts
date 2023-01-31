@@ -38,6 +38,7 @@ export class StickyComponent implements OnInit {
   }
 
   addNote(){
+     
     this.addnote.emit(this.index);
   }
 

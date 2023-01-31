@@ -8,10 +8,10 @@ label{
     margin-top: 50px;
     /* background-color:#D6EAF8 ; */
      background-color: rgba(300,300,228,1);
-    height: 180px;
+    height: 280px;
     /* border-radius: 10px; */
-    width:200px;
-    /* box-shadow: 2px 2px 2px #000; */
+    width:300px;
+    box-shadow: 2px 2px 2px #000;
     box-shadow: 5px 5px 7px rgba(33,33,33,.7);
   
   }
@@ -23,6 +23,7 @@ label{
     border: none;
     top:13px;
     outline: none;
+    height: fit-content;
     
   }
   
@@ -36,14 +37,14 @@ label{
   img.delete{
      width:15px;
     position: relative;
-    left: 50px;
+    left: 120px;
     top:0px;
   }
   
   img.add{
-     width:15px;
+    width:15px;
     position: relative;
-    left: 60px;
+    left:140px;
     top:0px;
   }
   
@@ -65,7 +66,7 @@ label{
   #save{
     background-color: red;
     width:30px;
-    height: 20px;
+    height: 50px;
     text-align: center;
   }
   

@@ -10,13 +10,19 @@
             <mat-icon>account_circle</mat-icon>
         </button>
 
-      <button matTooltip="Add notes"  (click)="addNote($event)" mat-icon-button>
-        <mat-icon>receipt</mat-icon>
-    </button>
-<!-- 
-    <button (click)="delete(noteIndex)" matTooltip="Delete Notes" mat-icon-button>
-      <mat-icon>delete</mat-icon>
-    </button> -->
+        <button matTooltip="Add notes"  (click)="addNote($event)" mat-icon-button>
+            <mat-icon>receipt</mat-icon>
+        </button>
+        
+        <button (click)="stickyService.deleteNote(stickyService.noteIndex)" matTooltip="Delete Notes" mat-icon-button>
+            <mat-icon>delete</mat-icon>
+        </button> 
+        
+
+
+
+
+
 
     </div>
 </mat-toolbar>
