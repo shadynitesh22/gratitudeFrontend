@@ -29,7 +29,7 @@ export class LayoutComponent {
 
   addNote(note: any) {
     this.stickyService.addNote(note);
-    console.log(note)
+    console.log(note, "add note on layout component")
   }
 
   delete(index: any) {

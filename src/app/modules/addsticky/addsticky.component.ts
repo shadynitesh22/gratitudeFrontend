@@ -10,25 +10,32 @@ import {Notes} from '../sticky/sticky/sticky.model';
 })
 export class AddstickyComponent {
 notes : Notes[] = [] ;
-// note : Subscription = new Subscription;
+subscription : Subscription = new Subscription;
+
+subscription2 : Subscription = new Subscription;
+
 noteIndex= 0;
 
 constructor(private  stickyService: SharedService){
+
+
 }
 
+ngOnInit(){
 
-ngDoCheck(){
-
- this.stickyService.noteAdded.subscribe((resp:any)=>{
-    console.log(resp, "subsrription respoinse");
-    console.log(this.stickyService.noteAdded, "noteadded");
-   })
-  
+  this.subscription = this.stickyService.note.subscribe((resp:any)=>{
+    console.log(resp,"response from subscription");
+    this.notes = resp;
+    
+  })
 }
+
 addNote(note:any){
-  console.log(note, "notess");
   
   this.notes.push(note);
+
+
+
 }
 
 Delete(index:any){

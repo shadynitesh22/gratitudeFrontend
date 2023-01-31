@@ -25,6 +25,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     StickyModule,
     MaterialModule
-  ],providers:[SharedService],
+  ],providers:[],
 })
 export class AddstickyModule { }
