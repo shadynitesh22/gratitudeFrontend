@@ -40,6 +40,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: docker.io
+          ecr: auto
           username: shadynitesh22
           password: dckr_pat_wtWr45o1CEzqF4n52bBaouFJqAE
 
