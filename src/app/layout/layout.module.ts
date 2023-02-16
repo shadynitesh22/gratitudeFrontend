@@ -26,7 +26,6 @@ import {  SharedService } from '../app.service';
   exports : [
     LayoutComponent
   ],
-  providers:[SharedService],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class LayoutModule {

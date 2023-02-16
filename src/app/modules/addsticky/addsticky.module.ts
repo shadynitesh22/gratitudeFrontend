@@ -4,7 +4,7 @@ import { AddstickyComponent } from './addsticky.component';
 import { RouterModule, Routes } from '@angular/router';
 import { StickyModule } from 'src/app/modules/sticky/sticky.module';
 import { MaterialModule } from 'src/app/material/material.module';
-import {  SharedService } from 'src/app/app.service';
+
 
 
 const routes: Routes = [
@@ -25,6 +25,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     StickyModule,
     MaterialModule
-  ],providers:[SharedService],
+  ]
 })
 export class AddstickyModule { }
