@@ -11,7 +11,7 @@ env:
   REPOSITORY: shadynitesh/gratitudefrontend
   IMAGE_NAME: gratitudefrontend
   USERNAME: shadynitesh22
-  PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  PASSWORD: dckr_pat_wtWr45o1CEzqF4n52bBaouFJqAE
   
 
 jobs:
