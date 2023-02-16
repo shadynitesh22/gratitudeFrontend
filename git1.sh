@@ -1,3 +1,4 @@
+
 #!/bin/sh
 red=$(tput setaf 1)
 green=$(tput setaf 2)
@@ -293,31 +294,29 @@ build_image() {
 
     echo "Please type the image name:"
     read imagename 
+if [ ! -f "Dockerfile" ]; then
+    echo "Dockerfile not found, creating..."
+    dockerize_project
+fi
 
-    if [ ! -f "Dockerfile" ]; then
-        echo "Dockerfile not found, creating..."
-        dockerize_project
-    fi
-
-    echo "Checking for existing image..."
-    if sudo docker images | awk '{print $1}' | grep -q $imagename; then
-        echo "Image already exists, updating..."
-        # Stop and remove the existing container
-        current_dir = $(basename"$(pwd)")
-        sudo docker stop $current_dir-container
-        sudo docker rm $current_dir-container
-        #pull the latest image
-        sudo docker pull $imagename:$version
-        # Run the updated image
-        sudo docker run --name $current_dir-container -d $imagename:$version
-    else
-        echo "Building new image..."
-        sudo docker build -t $imagename:$version .
-        # Build new container
-        current_dir = $(basename"$(pwd)")
-        sudo docker run --name $current_dir-container -d $imagename:$version
-
-    fi
+echo "Checking for existing image..."
+if sudo docker images | awk '{print $1}' | grep -q $imagename; then
+    echo "Image already exists, updating..."
+    # Stop and remove the existing container
+    current_dir=$(basename $(pwd))
+    sudo docker stop $current_dir-container
+    sudo docker rm $current_dir-container
+    #pull the latest image
+    sudo docker pull $imagename:$version
+    # Run the updated image
+    sudo docker run --name $current_dir-container -d $imagename:$version
+else
+    echo "Building new image..."
+    sudo docker build -t $imagename:$version .
+    # Build new container
+    current_dir=$(basename $(pwd))
+    sudo docker run --name $current_dir-container -d $imagename:$version
+fi
 }
 
 
@@ -437,7 +436,7 @@ push_repo() {
         read version
         git tag -a $version -m "version $version"
         git push origin $version
-        echo "Build tag pushed successfully"
+        echo "Build tag pushed successfdsdully"
     fi
 }
 
