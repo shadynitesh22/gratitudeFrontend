@@ -1,1 +1,25 @@
-<p>input-control works!</p>
+
+<mat-form-field class="w-100-p" [ngClass]="fieldClass">
+    <mat-label>{{label}}</mat-label>
+  
+    <mat-icon role="presentation" matPrefix *ngIf="icon">{{icon}}</mat-icon>
+    <input fuseAutoFocusDirective class="ctrl" #inputStr *ngIf="valueType === 'text'" matInput
+       [formControl]="control" [placeholder]="placeholder" [type]="typeAttr"
+      [ngClass]="formControlName + '-uiq'" autocomplete="off">
+    <input fuseAutoFocusDirective class="ctrl"
+      *ngIf="valueType !== 'text' && valueType !== 'number' && valueType !== 'currency' && valueType !== 'google_address'"
+      matInput [formControl]="control" [placeholder]="placeholder" [type]="typeAttr" [ngClass]="formControlName + '-uiq'">
+    <input fuseAutoFocusDirective class="ctrl" #inputNum *ngIf="valueType === 'number'" matInput [formControl]="control"
+      [placeholder]="placeholder" type="number" [ngClass]="formControlName + '-uiq'">
+    <input fuseAutoFocusDirective *ngIf="valueType === 'currency'" matInput [formControl]="control" currencyMask
+      [placeholder]="placeholder"  (keyup)="new_updateCurrencyCtrl()"
+      [ngClass]="formControlName+ '-uiq'">
+  
+    <mat-error class="red-700-fg"
+      *ngIf="control && !erroMsg && (control.hasError('required') || hasError(control,'whitespace'))">Field is
+      required. Please enter valid data</mat-error>
+    <mat-error class="red-700-fg" *ngIf="control && control.hasError('pattern')">Please enter valid data. {{validatorPatternSample}}</mat-error>
+    <mat-error class="red-700-fg" *ngIf="control && erroMsg && control.invalid">{{erroMsg}}</mat-error>
+    <mat-hint>{{hint}}</mat-hint>
+    
+  </mat-form-field>

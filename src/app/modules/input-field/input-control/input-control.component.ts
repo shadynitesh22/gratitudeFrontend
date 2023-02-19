@@ -1,11 +1,11 @@
 
-import { Component, OnInit, Input, forwardRef, OnDestroy, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, OnDestroy, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, Validators, FormControl, NG_VALIDATORS } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
-import { randexp } from 'randexp';
-import { DeviceDetectorService } from 'ngx-device-detector';
+
+
 import * as moment from 'moment';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
+
 
 
 @Component({
@@ -53,6 +53,7 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
   @Input('errorMessage') erroMsg !: string;
   @Input('dfd') dynamicData: any;
   @Input('mask') mask: any;
+  public typeAttr:any;
 
   public control ! : FormControl;
   
@@ -65,12 +66,12 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
   @ViewChild('inputStr') inputStr !: ElementRef;
   @ViewChild('inputNum') inputNum !: ElementRef;
   curentInput!: ElementRef;
-  convertedPattern: any = false;
+  convertedPattern:any  = false;
   maskPattern: any = false;
 
   @Input() parentEvents !: Observable<any>;
   private parentEventsSubscription: any;
-  public typeAttr = null;
+  
 
   subscriptions: Subscription[] = [];
   new_isMobile = false;
@@ -113,39 +114,211 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
         this.placeholder = this.validatorPatternSample;
       }
 
-      if(this.mask && this.valueType == "text"){
-        this.convertedPattern = this.new_getMask(this.mask);
-        if (this.convertedPattern){
-          this.maskPattern = this.convertedPattern;
-        }
-      }
+    
     }
     this.control = new FormControl("",Validators.compose([
       this.required ? Validators.required : null,
+      this.required ? this.noWhitespaceValidator : null,
+      this.validators && this.validators.includes("minLength") && this.minLength ? Validators.minLength(this.minLength) : null,
+      this.validators && this.validators.includes("maxLength") && this.maxLength ? Validators.maxLength(this.maxLength) : null,
+      this.validators && this.validators.includes("min") && this.minVal ? Validators.min(this.minVal) : null,
+      this.validators && this.validators.includes("max") && this.maxVal ? Validators.max(this.maxVal) : null,
+      this.validators && this.validators.includes("email")  ? Validators.email : null,
+      this.validators && this.validators.includes("pattern") && this.validatorPattern ? Validators.pattern(this.validatorPattern) : null,
       
 
 
 
-    ]))
+    ]));
+    this.typeAttr = this.valueType === "number" ? "number":null;
+    this.subscriptions.push(
+      this.control.valueChanges.subscribe(value =>{
+
+        if(this.dynamicData && this.dynamicData.config && this.dynamicData.upercase && this.dynamicData.valueType == 'google_address'){
+
+          if (typeof value.formatted ==="string"){
+            value.formatted_address = value.formatted_address.toUpperCase();
+            value.address.addr1 = value.address.addr1.toUpperCase();
+            value.address.city = value.address.city.toUpperCase();
+            value.address.state = value.address.state.toUpperCase();
+            value.address.zip = value.address.zip.toUpperCase();
+          }
+
+        }
+
+        if (typeof value === 'string'){
+
+          value = value.trim();
+        }
+        if (this.control.invalid){
+          this.control.markAllAsTouched();
+        }
+        this.onChange(value);
+        this.onTouched();
+
+      })
+
+
+    );
+    this.cdRef.detectChanges();
+    // if (!this.new_isMobile) {
+    //   //   this.renderer.selectRootElement('.ctrl').focus();
+    //   // }
+
+
+
   }
+  ngDoCheck():void{
+    if (this.mask && this.valueType == 'text'&& ! this.new_isMobile){
+      if(! this.virtualKeyboardButton){
+        this.virtualKeyboardButton == document.querySelector('[data-indopt="virtual-keyboard"]');
 
-  
- 
-
-  public new_getMask = (p) => {
-    const inArray = p.toString().split(',');
-    const convertedPattern = [];
-    inArray.forEach(element => {
-      if (element.indexOf('\\') > -1 || element.indexOf('[') > -1) {
-        const dd = new RegExp(element);
-        convertedPattern.push(dd);
-      } else {
-        convertedPattern.push(element);
       }
-    });
-    return convertedPattern;
+      if (this.virtualKeyboardButton){
+
+        if(this.virtualKeyboardButton.getAttrivute("aria-pressed") === 'ture'&& this.maskPattern){
+          this.maskPattern = false;
+        } 
+        if(this.virtualKeyboardButton.getAttrivute("aria-pressed") === 'false'&& !this.maskPattern){
+          this.maskPattern = this.convertedPattern;
+        }
+      }
+      
+
+
+    }
+    if (this.curentInput && this.curentInput.nativeElement.value ! == this.control.value ){
+      this.control.setValue(this.curentInput.nativeElement.value);
+    }
+
+  }
+
+  ngAfterViewInit(): void {
+    this.curentInput = this.inputNum || this.inputStr;
+    if (this.parentEvents)
+     {
+
+      this.parentEventsSubscription = this.parentEvents.subscribe(res=>{
+
+        if (res == 'makeControlsTouched')
+        {
+          this.control.markAllAsTouched();
+          this.control.setErrors(this.control.errors);
+
+          if (!this.control.errors){
+
+            this.control.setValue(this.control.value);
+
+          }
+          
+
+        }
+      });
+
+    }
   }
 
 
+
+
+  hasError = (controlName:any,errorName:String) =>{
+    return controlName['errors'] && controlName['errors'].hasOwnProperty(errorName) && controlName['errors']['errorName'];
+  }
+
+  noWhitespaceValidator(control: FormControl) {
+    if (control.value instanceof moment) {
+      const isValid = true;
+      return isValid ? null : { 'whitespace': true };
+    }
+    const isWhitespace = ((control.value && control.value.toString()) || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
+ registerOnChange(fn: any): void {
+   this.onChange = fn;
+ }
+ writeValue(value:any): void {
+  if (value){
+   this.value = value;
+  }
+
+  }
+
+registerOnTouched(fn: any): void {
+  this.onTouched = fn;
+}
+validate(_:FormControl):any{
+  return this.control.valid ? null:{[this.formControlName]:{valid:false}};
+}
+
+public new_updateCurrencyCtrl = () => {
+  if (isNaN(this.control.value)) {
+    this.control.setValue(null);
+    this.control.markAsTouched();
+  }
+}
+
+
+// public new_getMask = (p) => {
+//   const inArray = p.toString().split(',');
+//   const convertedPattern = [];
+//   inArray.forEach(element => {
+//     if (element.indexOf('\\') > -1 || element.indexOf('[') > -1) {
+//       const dd = new RegExp(element);
+//       convertedPattern.push(dd);
+//     } else {
+//       convertedPattern.push(element);
+//     }
+//   });
+  
+//   return convertedPattern;
+// }
+// async onFocusAddress() {
+//   const googleAddressEnabled = await this.locationService.getGooglePlacesApiKey();
+//   if (googleAddressEnabled) {
+//     this.control.setErrors({ 'incorrect': true });
+//   }
+// }x
+
+// registerAddressChange(address: any) {
+//   const parsedAddress = this.locationService.parseGoogleLocation(address);
+//   const output = {
+//     formatted_address: parsedAddress.raw.location.formatted_address,
+//     address: {
+//       addr1: parsedAddress.name,
+//       city: parsedAddress.city,
+//       state: parsedAddress.state,
+//       zip: parsedAddress.postalCode
+//     }
+//   };
+//   this.control.setValue(output);
+//   this.onAddressChange.next(output);
+
+
+// }
+// enterManaually(){
+
+//   this.enterAddressManually =$event.checked;
+// }
+
+
+ngOnDestroy(): void {
+  if (this.parentEventsSubscription) {
+      this.parentEventsSubscription.unsubscribe();
+  }
+}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
