@@ -19,7 +19,7 @@
 
 }
 .login-content {
-  padding: 5px;
+ 
   width: 500px;
   display: block;
   margin:  auto;
@@ -165,3 +165,18 @@
   animation-direction: alternate;
 }
 
+.login-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #555;
+}
+
+.register-link {
+  color: #007bff;
+  text-decoration: none;
+  margin-left: 5px;
+  font-weight: bold;
+}

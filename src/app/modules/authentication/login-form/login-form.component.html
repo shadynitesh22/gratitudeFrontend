@@ -1,5 +1,3 @@
-
-
 <div class="login-container">
 
 	<div class="login-content">
@@ -19,7 +17,7 @@
 					[valueType]="'password'" [minLength]="8"></app-input-control>
 
 				<br>
-			
+
 				<mat-checkbox [color]="'primary'" class="example-margin">Remember me!</mat-checkbox>
 
 				<button class="loginButton hvr-grow" type="submit" mat-raised-button color="primary">
@@ -30,7 +28,8 @@
 
 
 			</form>
-			<mat-toolbar class="login-toolbar" color="primary">Login with social</mat-toolbar>
+			<mat-toolbar class="login-toolbar" color="primary">Log in with <mat-icon class="loginIcon"
+					style="display: inline-block;">arrow_downward</mat-icon></mat-toolbar>
 			<div class="socialMediaFlex">
 				<button class="hvr-pulse" mat-fab color="primary"><i class="fab fa-facebook-f"></i></button>
 				<button class="hvr-pulse" mat-fab color="primary"><i class="fab fa-twitter"></i></button>
@@ -42,8 +41,11 @@
 			</div>
 			<br>
 			<div class="login-footer">
-				<span> If You don't have a account yet please <a routerLink='/register'>REGISTER HERE</a></span>
+				<span>Don't have an account yet?</span>
+				<a routerLink="/signup" class="register-link">Register Here</a>
+				
 			</div>
+
 
 
 
