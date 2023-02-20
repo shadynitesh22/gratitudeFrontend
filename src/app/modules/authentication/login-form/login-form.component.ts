@@ -13,7 +13,7 @@ export class LoginFormComponent {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
 
-constructor(private FormBuilder: FormBuilder,public snackbar:MatSnackBar){
+constructor(public snackbar:MatSnackBar){
 
 }
 
@@ -21,7 +21,9 @@ constructor(private FormBuilder: FormBuilder,public snackbar:MatSnackBar){
 ngOnInit(): void {
   this.loginForm = new FormGroup({
     email: new FormControl,
-    password: new FormControl  })
+    password: new FormControl,
+    remrememberMe: new FormControl
+    })
 };s: any;
 hide = true;
 get passwordInput() { return this.loginForm.get('password'); }  

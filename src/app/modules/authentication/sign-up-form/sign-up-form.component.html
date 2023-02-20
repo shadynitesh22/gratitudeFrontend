@@ -1,1 +1,65 @@
-<p>sign-up-form works!</p>
+<div class="login-container">
+
+    <div class="login-content">
+        <mat-toolbar class="login-toolbar" color="primary"><lottie-player
+                src="https://lottie.host/90381aa8-2213-4fec-ace5-3826b6ea9a55/EmWkvJrmch.json" background="transparent"
+                speed="1" style="width: 350px; height: 100px;" loop autoplay></lottie-player></mat-toolbar>
+        <mat-card>
+            <form class="loginForm" [formGroup]="RegisterForm">
+
+                <app-input-control icon="'person_outline" [appearance]="'standard'" [label]="'Email'"
+                    [placeholder]="'Enter your email'" [hint]="'Enter your username'" [required]="true"
+                    [valueType]="'email'" [required]="true"></app-input-control>
+
+                <br>
+                <app-input-control icon="'person_outline" [appearance]="'standard'" [label]="'First Name'"
+                    [placeholder]="'Enter your First Name'" [hint]="'Enter your First Name'" [required]="true"
+                    [valueType]="'First Name'" [required]="true"></app-input-control>
+
+
+                <br>
+                <app-input-control icon="'person_outline" [appearance]="'standard'" [label]="'First Name'"
+                    [placeholder]="'Enter your Last Name'" [hint]="'Enter your Last Name'" [required]="true"
+                    [valueType]="'First Name'" [required]="true"></app-input-control>
+
+                <br>
+                <app-input-control icon="'person_outline" [appearance]="'standard'" [label]="'Email'"
+                    [placeholder]="'Enter your Password'" [hint]="'Enter your Password'" [required]="true"
+                    [valueType]="'password'" [required]="true"></app-input-control>
+
+
+
+                <app-input-control [hint]="'Add your password'" [icon]="'lock_outline'" [appearance]="'standard'"
+                    [label]="'Confirm Password'" [placeholder]="'Confirm your password'" [required]="true"
+                    [valueType]="'password'" [minLength]="8"></app-input-control>
+
+
+                <br>
+                <button class="loginButton hvr-grow" type="submit" mat-raised-button color="primary">
+                    <mat-icon class="loginIcon" style="display: inline-block;">person</mat-icon>
+                    <span style="display: inline-block;">LOGIN</span>
+                </button>
+
+
+
+            </form>
+            <mat-toolbar class="login-toolbar" color="primary">Login with social</mat-toolbar>
+            <div class="socialMediaFlex">
+                <button class="hvr-pulse" mat-fab color="primary"><i class="fab fa-facebook-f"></i></button>
+                <button class="hvr-pulse" mat-fab color="primary"><i class="fab fa-twitter"></i></button>
+                <button class="hvr-pulse" mat-fab color="primary"><i class="fab fa-google"></i></button>
+                <button class="hvr-pulse" mat-fab color="primary"><i class="fab fa-linkedin-in"></i></button>
+                <button class="hvr-pulse" mat-fab color="primary"><i class="fab fa-github"></i></button>
+                <br>
+
+            </div>
+            <br>
+            <div class="login-footer">
+                <span> If You are alerady have a account log in <a routerLink='/register'>REGISTER HERE</a></span>
+            </div>
+
+
+
+        </mat-card>
+    </div>
+</div>

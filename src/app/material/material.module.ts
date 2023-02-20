@@ -22,6 +22,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AngularDraggableModule } from 'angular2-draggable';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { CheckBoxModule } from '../modules/check-box/check-box.module';
 
 
 
@@ -49,6 +51,7 @@ import { AngularDraggableModule } from 'angular2-draggable';
     MatInputModule,
     MatDialogModule,
     AngularDraggableModule,
+    MatCheckboxModule
 
   ],
 
@@ -73,7 +76,7 @@ import { AngularDraggableModule } from 'angular2-draggable';
     MatInputModule,
     MatDialogModule,
     AngularDraggableModule,
-    
+    CheckBoxModule
   ],schemas:[
 
     CUSTOM_ELEMENTS_SCHEMA,
