@@ -1,40 +1,49 @@
 <div class="login-container">
 
     <div class="login-content">
-        <mat-toolbar class="login-toolbar" color="primary"><lottie-player
+
+        <mat-toolbar   class="login-toolbar " color="primary">
+            <button matTooltip="Home" matTooltipPosition="below" style="right:18px" class="hvr-grow" [routerLink]="['/']" mat-fab color="primary" aria-label="Example icon button with a home icon">
+                <mat-icon>home</mat-icon>
+                
+              </button>
+              <div style="margin-right: 45px;">
+            <lottie-player style
+            
                 src="https://lottie.host/90381aa8-2213-4fec-ace5-3826b6ea9a55/EmWkvJrmch.json" background="transparent"
-                speed="1" style="width: 350px; height: 100px;" loop autoplay></lottie-player></mat-toolbar>
+                speed="1" style="width: 350px; height: 100px;" loop autoplay></lottie-player>
+             </div>
+            </mat-toolbar>
+
         <mat-card>
             <form class="loginForm" [formGroup]="RegisterForm">
-
-                <app-input-control icon="'person_outline" [appearance]="'standard'" [label]="'Email'"
-                    [placeholder]="'Enter your email'" [hint]="'Enter your username'" [required]="true"
+<br>
+                <app-input-control icon="person_outline" [appearance]="'standard'" [label]="'Email'"
+                    [placeholder]="'Enter your email'"  [required]="true"
                     [valueType]="'email'" [required]="true"></app-input-control>
-
-                <br>
-                <app-input-control icon="'person_outline" [appearance]="'standard'" [label]="'First Name'"
-                    [placeholder]="'Enter your First Name'" [hint]="'Enter your First Name'" [required]="true"
+                
+                <app-input-control icon="person_outline" [appearance]="'standard'" [label]="'First Name'"
+                    [placeholder]="'Enter your First Name'"  [required]="true"
                     [valueType]="'First Name'" [required]="true"></app-input-control>
 
 
-                <br>
-                <app-input-control icon="'person_outline" [appearance]="'standard'" [label]="'First Name'"
-                    [placeholder]="'Enter your Last Name'" [hint]="'Enter your Last Name'" [required]="true"
+                <app-input-control icon="person_outline" [appearance]="'standard'" [label]="'Last Name'"
+                    [placeholder]="'Enter your Last Name'"  [required]="true"
                     [valueType]="'First Name'" [required]="true"></app-input-control>
 
-                <br>
-                <app-input-control icon="'person_outline" [appearance]="'standard'" [label]="'Email'"
-                    [placeholder]="'Enter your Password'" [hint]="'Enter your Password'" [required]="true"
+                
+                <app-input-control icon="person_outline" [appearance]="'standard'" [label]="'Password'"
+                    [placeholder]="'Enter your Password'"  [required]="true"
                     [valueType]="'password'" [required]="true"></app-input-control>
 
 
 
-                <app-input-control [hint]="'Add your password'" [icon]="'lock_outline'" [appearance]="'standard'"
+                <app-input-control  [icon]="'lock_outline'" [appearance]="'standard'"
                     [label]="'Confirm Password'" [placeholder]="'Confirm your password'" [required]="true"
                     [valueType]="'password'" [minLength]="8"></app-input-control>
 
 
-                <br>
+             
                 <button class="loginButton hvr-grow" type="submit" mat-raised-button color="primary">
                     <mat-icon class="loginIcon" style="display: inline-block;">person</mat-icon>
                     <span style="display: inline-block;">REGISTER</span>
@@ -43,8 +52,7 @@
 
 
             </form>
-            <mat-toolbar class="login-toolbar" color="primary">Register in with <mat-icon class="loginIcon"
-                style="display: inline-block;">arrow_downward</mat-icon></mat-toolbar>
+         
             <div class="socialMediaFlex">
                 <button class="hvr-pulse" mat-fab color="primary"><i class="fab fa-facebook-f"></i></button>
                 <button class="hvr-pulse" mat-fab color="primary"><i class="fab fa-twitter"></i></button>
@@ -54,14 +62,11 @@
                 <br>
 
             </div>
-            <br>
+     
             <div class="login-footer">
 				<span>Alerady have an account yet?</span>
 				<a routerLink="/login" class="register-link">Login Here</a>
 			</div>
-
-
-
         </mat-card>
     </div>
 </div>

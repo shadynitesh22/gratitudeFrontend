@@ -6,7 +6,7 @@ import { Subscription, Observable } from 'rxjs';
 import { randexp } from 'randexp';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
-import * as moment from 'moment';
+
 
 
 import { MatBottomSheet } from '@angular/material/bottom-sheet';

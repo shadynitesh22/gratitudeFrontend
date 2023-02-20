@@ -1,12 +1,21 @@
-<mat-toolbar>
+<mat-toolbar color="primary">
     Gratitude
 
   
     <div fxFlex fxLayoutAlign="flex-end center">
-        <button mat-icon-button>
+        <button  mat-icon-button >
             <mat-icon>notifications</mat-icon>
         </button>
-        <a routerLink="auth/login" mat-icon-button>
+        <button  mat-icon-button >
+            <mat-icon>search</mat-icon>
+        </button>
+        <button  mat-icon-button >
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        
+  
+    
+        <a matTooltip="Login" routerLink="auth/login" mat-icon-button>
             <mat-icon>account_circle</mat-icon>
     
         </a>

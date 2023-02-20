@@ -51,7 +51,7 @@ import { CheckBoxModule } from '../modules/check-box/check-box.module';
     MatInputModule,
     MatDialogModule,
     AngularDraggableModule,
-    MatCheckboxModule
+    MatCheckboxModule,
 
   ],
 
@@ -76,7 +76,7 @@ import { CheckBoxModule } from '../modules/check-box/check-box.module';
     MatInputModule,
     MatDialogModule,
     AngularDraggableModule,
-    CheckBoxModule
+    MatCheckboxModule
   ],schemas:[
 
     CUSTOM_ELEMENTS_SCHEMA,

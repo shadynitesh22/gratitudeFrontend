@@ -213,7 +213,7 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
   hasError = (controlName:any,errorName:String) =>{
     return controlName['errors'] && controlName['errors'].hasOwnProperty(errorName) && controlName['errors']['errorName'];
   }
-
+// Fix this in bugfix branch
   noWhitespaceValidator(control: FormControl) {
     if (control.value instanceof moment) {
       const isValid = true;

@@ -1,35 +1,46 @@
 <div class="login-container">
 
 	<div class="login-content">
-		<mat-toolbar class="login-toolbar" color="primary"><lottie-player
-				src="https://lottie.host/90381aa8-2213-4fec-ace5-3826b6ea9a55/EmWkvJrmch.json" background="transparent"
-				speed="1" style="width: 350px; height: 100px;" loop autoplay></lottie-player></mat-toolbar>
+
+
+
+		<mat-toolbar class="login-toolbar " color="primary">
+			<button matTooltip="Home" matTooltipPosition="below" style="right:18px" class="hvr-grow"
+				[routerLink]="['/']" mat-fab color="primary" aria-label="Example icon button with a home icon">
+				<mat-icon>home</mat-icon>
+
+			</button>
+			<div style="margin-right: 45px;">
+				<lottie-player style src="https://lottie.host/90381aa8-2213-4fec-ace5-3826b6ea9a55/EmWkvJrmch.json"
+					background="transparent" speed="1" style="width: 350px; height: 100px;" loop
+					autoplay></lottie-player>
+			</div>
+		</mat-toolbar>
+
+
 		<mat-card>
+
 			<form class="loginForm" [formGroup]="loginForm">
-
-				<app-input-control icon="'person_outline" [appearance]="'standard'" [label]="'Email'"
-					[placeholder]="'Enter your email'" [hint]="'Enter your username'" [required]="true"
-					[valueType]="'email'" [required]="true"></app-input-control>
+				<br>
+				<app-input-control icon="person_outline" [appearance]="'standard'" [label]="'Email'"
+					[placeholder]="'Enter your email'" [required]="true" [valueType]="'email'"
+					[required]="true"></app-input-control>
 
 				<br>
-				<app-input-control [hint]="'Add your password'" [icon]="'lock_outline'" [appearance]="'standard'"
-					[label]="'Password'" [placeholder]="'Enter your password'" [required]="true"
-					[valueType]="'password'" [minLength]="8"></app-input-control>
+				<app-input-control [icon]="'lock_outline'" [appearance]="'standard'" [label]="'Password'"
+					[placeholder]="'Enter your password'" [required]="true" [valueType]="'password'"
+					[minLength]="8"></app-input-control>
 
+				<app-simple-check-option [label]="'Remember Me'" [required]="false" [valueType]="'checkbox'"
+					[appearance]="'standard'"></app-simple-check-option>
 				<br>
-
-				<mat-checkbox [color]="'primary'" class="example-margin">Remember me!</mat-checkbox>
-
 				<button class="loginButton hvr-grow" type="submit" mat-raised-button color="primary">
 					<mat-icon class="loginIcon" style="display: inline-block;">person</mat-icon>
 					<span style="display: inline-block;">LOGIN</span>
 				</button>
-
-
-
 			</form>
-			<mat-toolbar class="login-toolbar" color="primary">Log in with <mat-icon class="loginIcon"
-					style="display: inline-block;">arrow_downward</mat-icon></mat-toolbar>
+
+			
 			<div class="socialMediaFlex">
 				<button class="hvr-pulse" mat-fab color="primary"><i class="fab fa-facebook-f"></i></button>
 				<button class="hvr-pulse" mat-fab color="primary"><i class="fab fa-twitter"></i></button>
@@ -39,11 +50,11 @@
 				<br>
 
 			</div>
-			<br>
+
 			<div class="login-footer">
 				<span>Don't have an account yet?</span>
 				<a routerLink="/signup" class="register-link">Register Here</a>
-				
+
 			</div>
 
 

@@ -8,7 +8,7 @@
   background-image: url("https://images.unsplash.com/photo-1547104442-044448b73426?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80");
   
 }
-
+ 
 
 .loginForm{
   display: flex;
@@ -39,8 +39,8 @@
 
 
 .loginButton {
-  width: 50%;
-  height: 60px;
+  width: 30%;
+  height: 50px;
   margin-top: 15px;
   margin-bottom: 15px;
 }
@@ -166,9 +166,10 @@
 }
 
 .login-footer {
+  padding: 10px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  justify-content: center;
   margin-top: 20px;
   font-size: 16px;
   color: #555;

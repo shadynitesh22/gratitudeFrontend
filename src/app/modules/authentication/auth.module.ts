@@ -7,6 +7,8 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { RouterModule, Routes } from '@angular/router';
 import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 
+import { CheckBoxModule } from '../check-box/check-box.module';
+
 
 const routes : Routes = [
   {path:"login", component: LoginFormComponent},
@@ -22,7 +24,8 @@ const routes : Routes = [
     InputFieldModule,
     ReactiveFormsModule,
     MaterialModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    CheckBoxModule
   ],exports:[
     LoginFormComponent
   ],

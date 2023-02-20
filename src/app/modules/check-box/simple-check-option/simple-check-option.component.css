@@ -1,0 +1,11 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.example-margin {
+   margin-right: 220px;
+   
+
+  }
+  .label-checkbox{
+    font-size: 16px;
+    color: #555;
+  }
