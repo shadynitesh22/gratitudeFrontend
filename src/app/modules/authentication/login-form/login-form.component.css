@@ -1,0 +1,63 @@
+
+.login-container {
+  margin-top: 50px;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  display: flex;
+
+}
+
+form {
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+  
+}
+.loginForm{
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+
+}
+.login-content {
+  padding: 5px;
+  width: 500px;
+  display: block;
+  margin:  auto;
+  --elevation: 10;
+  --epx: calc(var(--elevation) * 1px);
+  --offset-y: calc(var(--epx) + 1px);
+  --blur: calc(var(--epx) * 2);
+  --spread: calc(var(--epx) * .3);
+  box-shadow: 0 var(--offset-y) var(--blur) var(--spread) rgba(0, 0, 0, 0.3);
+
+
+}
+
+.login-toolbar {
+  justify-content: center;
+}
+
+.mat-form-field {
+  width: 100%;
+  display: block;
+}
+
+.loginButton {
+  width: 50%;
+  height: 60px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.socialMediaFlex{
+
+  display:flex;
+  justify-content: space-around;
+}
+
+.mat-mdc-card{
+  background-color: white;
+}

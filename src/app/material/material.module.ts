@@ -72,7 +72,8 @@ import { AngularDraggableModule } from 'angular2-draggable';
     MatTableModule,
     MatInputModule,
     MatDialogModule,
-    AngularDraggableModule
+    AngularDraggableModule,
+    
   ],schemas:[
 
     CUSTOM_ELEMENTS_SCHEMA,

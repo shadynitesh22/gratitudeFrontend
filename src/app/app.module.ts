@@ -12,6 +12,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { LayoutModule } from './layout/layout.module';
 import { SharedService } from './app.service';
+import { AuthModule } from './modules/authentication/auth.module';
+import { LoginFormComponent } from './modules/authentication/login-form/login-form.component';
+import { SignUpFormComponent } from './modules/authentication/sign-up-form/sign-up-form.component';
+
 
 const routes: Routes = [
   {
@@ -19,6 +23,13 @@ const routes: Routes = [
     component : LayoutComponent,
     loadChildren :() => import('./modules/addsticky/addsticky.module').then(m => m.AddstickyModule)
   },
+{
+  path: "auth",
+  
+  loadChildren :() =>  AuthModule
+},
+
+
 
 ]
 
@@ -26,6 +37,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+ 
    ],
   imports: [
     BrowserModule,
@@ -33,7 +45,8 @@ const routes: Routes = [
     BrowserAnimationsModule,
     FormsModule,
     LayoutModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    AuthModule
   ],
   providers: [SharedService],
   bootstrap: [AppComponent]

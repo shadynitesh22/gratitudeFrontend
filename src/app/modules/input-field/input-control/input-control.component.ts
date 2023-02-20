@@ -2,8 +2,6 @@
 import { Component, OnInit, Input, forwardRef, OnDestroy, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, Validators, FormControl, NG_VALIDATORS } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
-
-
 import * as moment from 'moment';
 
 
@@ -102,8 +100,7 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
 
   // Init Values here 
   constructor(private cdRef:ChangeDetectorRef){
-    // this option will resize the inputs for mobile this.options accordingly to the device type
-      // this.new_isMobile = this.deviceService.isMobile();
+  
 
 
   }
@@ -134,16 +131,11 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
     this.subscriptions.push(
       this.control.valueChanges.subscribe(value =>{
 
-        if(this.dynamicData && this.dynamicData.config && this.dynamicData.upercase && this.dynamicData.valueType == 'google_address'){
-
-          if (typeof value.formatted ==="string"){
-            value.formatted_address = value.formatted_address.toUpperCase();
-            value.address.addr1 = value.address.addr1.toUpperCase();
-            value.address.city = value.address.city.toUpperCase();
-            value.address.state = value.address.state.toUpperCase();
-            value.address.zip = value.address.zip.toUpperCase();
-          }
-
+        if (this.valueType === 'number' && typeof value === 'string'){
+          value = parseInt(value, 10);
+        }
+        if (this.valueType === 'text' && typeof value === 'string'){
+          value = value.trim();
         }
 
         if (typeof value === 'string'){
@@ -160,10 +152,7 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
 
 
     );
-    this.cdRef.detectChanges();
-    // if (!this.new_isMobile) {
-    //   //   this.renderer.selectRootElement('.ctrl').focus();
-    //   // }
+   
 
 
 
@@ -251,55 +240,6 @@ validate(_:FormControl):any{
   return this.control.valid ? null:{[this.formControlName]:{valid:false}};
 }
 
-public new_updateCurrencyCtrl = () => {
-  if (isNaN(this.control.value)) {
-    this.control.setValue(null);
-    this.control.markAsTouched();
-  }
-}
-
-
-// public new_getMask = (p) => {
-//   const inArray = p.toString().split(',');
-//   const convertedPattern = [];
-//   inArray.forEach(element => {
-//     if (element.indexOf('\\') > -1 || element.indexOf('[') > -1) {
-//       const dd = new RegExp(element);
-//       convertedPattern.push(dd);
-//     } else {
-//       convertedPattern.push(element);
-//     }
-//   });
-  
-//   return convertedPattern;
-// }
-// async onFocusAddress() {
-//   const googleAddressEnabled = await this.locationService.getGooglePlacesApiKey();
-//   if (googleAddressEnabled) {
-//     this.control.setErrors({ 'incorrect': true });
-//   }
-// }x
-
-// registerAddressChange(address: any) {
-//   const parsedAddress = this.locationService.parseGoogleLocation(address);
-//   const output = {
-//     formatted_address: parsedAddress.raw.location.formatted_address,
-//     address: {
-//       addr1: parsedAddress.name,
-//       city: parsedAddress.city,
-//       state: parsedAddress.state,
-//       zip: parsedAddress.postalCode
-//     }
-//   };
-//   this.control.setValue(output);
-//   this.onAddressChange.next(output);
-
-
-// }
-// enterManaually(){
-
-//   this.enterAddressManually =$event.checked;
-// }
 
 
 ngOnDestroy(): void {

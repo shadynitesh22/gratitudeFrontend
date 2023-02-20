@@ -15,6 +15,9 @@ import { MaterialModule } from 'src/app/material/material.module';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule
+  ],exports:[
+
+    InputControlComponent
   ]
 })
 export class InputFieldModule { }

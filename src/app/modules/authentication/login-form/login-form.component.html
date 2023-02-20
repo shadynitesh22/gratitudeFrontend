@@ -1,0 +1,41 @@
+
+
+
+	<div class="login-container">
+		<div class="login-content">
+			<mat-toolbar class="login-toolbar" color="primary"><lottie-player src="https://lottie.host/90381aa8-2213-4fec-ace5-3826b6ea9a55/EmWkvJrmch.json"  background="transparent"  speed="1"  style="width: 350px; height: 100px;"  loop  autoplay></lottie-player></mat-toolbar>
+			<mat-card>
+				<form class="loginForm" [formGroup]="loginForm"  
+   >
+
+						<mat-icon matPrefix>person_outline</mat-icon>
+            <app-input-control icon="'person_outline" [appearance]="'standard'"  [label]="'Email'" [placeholder]="'Enter your email'"[hint]="'Enter your username'" [required]="true" [valueType]="'email'" [required]="true"></app-input-control>
+        
+			
+          <br>
+          <mat-icon matPrefix>lock_outline</mat-icon>
+
+      
+            <app-input-control [icon]="'lock_outline'" [appearance]="'standard'"  [label]="'Password'" [placeholder]="'Enter your password'" [required]="true" [valueType]="'password'"  [minLength]="8"></app-input-control>
+ 
+
+          <br>
+					<button class ="loginButton"type="submit" mat-raised-button color="primary">LOGIN</button>
+        </form>
+					<mat-toolbar class="login-toolbar" color="primary">Login with social</mat-toolbar>
+					<div class="socialMediaFlex">
+						<button mat-fab color="primary"><i class="fab fa-facebook-f"></i></button>
+						<button mat-fab color="accent"><i class="fab fa-google"></i></button>
+            <br>
+           
+					</div>
+          <br>
+          <div class="login-footer">
+            <span > If You don't have a account yet please <a routerLink ='/register'>REGISTER HERE</a></span>
+          </div>
+        
+
+				
+			</mat-card>
+		</div>
+	</div>
