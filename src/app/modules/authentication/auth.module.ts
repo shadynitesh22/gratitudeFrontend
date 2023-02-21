@@ -6,8 +6,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material/material.module';
 import { RouterModule, Routes } from '@angular/router';
 import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
-
 import { CheckBoxModule } from '../check-box/check-box.module';
+import { AuthService } from './auth-service.service';
 
 
 const routes : Routes = [
@@ -30,5 +30,6 @@ const routes : Routes = [
     LoginFormComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [AuthService]
 })
 export class AuthModule { }

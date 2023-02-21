@@ -6,28 +6,26 @@ import { MaterialModule } from './material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule } from '@angular/forms';
-
-import { StickyModule } from './modules/sticky/sticky.module';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { LayoutModule } from './layout/layout.module';
 import { SharedService } from './app.service';
 import { AuthModule } from './modules/authentication/auth.module';
-import { LoginFormComponent } from './modules/authentication/login-form/login-form.component';
-import { SignUpFormComponent } from './modules/authentication/sign-up-form/sign-up-form.component';
+import { HttpClientModule } from '@angular/common/http';
+
 
 
 const routes: Routes = [
   {
-    path : '',
-    component : LayoutComponent,
-    loadChildren :() => import('./modules/addsticky/addsticky.module').then(m => m.AddstickyModule)
+    path: '',
+    component: LayoutComponent,
+    loadChildren: () => import('./modules/addsticky/addsticky.module').then(m => m.AddstickyModule)
   },
-{
-  path: "auth",
-  
-  loadChildren :() =>  AuthModule
-},
+  {
+    path: "auth",
+
+    loadChildren: () => AuthModule
+  },
 
 
 
@@ -37,8 +35,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
- 
-   ],
+
+  ],
   imports: [
     BrowserModule,
     MaterialModule,
@@ -46,7 +44,8 @@ const routes: Routes = [
     FormsModule,
     LayoutModule,
     RouterModule.forRoot(routes),
-    AuthModule
+    AuthModule,
+    HttpClientModule
   ],
   providers: [SharedService],
   bootstrap: [AppComponent]

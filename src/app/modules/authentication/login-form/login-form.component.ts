@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { TooltipPosition } from '@angular/material/tooltip';
+import { Observable } from 'rxjs';
+import { AuthService } from '../auth-service.service';
 
 @Component({
   selector: 'app-login-form',
@@ -14,8 +16,9 @@ export class LoginFormComponent {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
   position = new FormControl(this.positionOptions[0]);
+  requestData$!: Observable<any>;
 
-  constructor(public snackbar: MatSnackBar) {
+  constructor(public snackbar: MatSnackBar,private authService: AuthService) {
 
   }
 
@@ -32,6 +35,7 @@ export class LoginFormComponent {
 
 
   login() {
+    
     this.snackbar.open('Login Successful', 'Close', {})
   }
 }
