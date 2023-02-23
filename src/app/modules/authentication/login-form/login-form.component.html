@@ -34,10 +34,11 @@
 				<app-simple-check-option [label]="'Remember Me'" [required]="false" [valueType]="'checkbox'"
 					[appearance]="'standard'"></app-simple-check-option>
 				<br>
-				<button class="loginButton hvr-grow" type="submit" mat-raised-button color="primary">
-					<mat-icon class="loginIcon" style="display: inline-block;">person</mat-icon>
+				<button id="login-button" (click)="login()" class="mt-2" mat-raised-button color="primary">Login</button>
+				<!-- <button class="loginButton hvr-grow" type="submit" mat-raised-button color="primary">
+					<mat-icon class="loginIcon"  (click)="login()" style="display: inline-block;">person</mat-icon>
 					<span style="display: inline-block;">LOGIN</span>
-				</button>
+				</button> -->
 			</form>
 
 			

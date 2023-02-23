@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { TooltipPosition } from '@angular/material/tooltip';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth-service.service';
 
@@ -18,7 +19,7 @@ export class LoginFormComponent {
   position = new FormControl(this.positionOptions[0]);
   requestData$!: Observable<any>;
 
-  constructor(public snackbar: MatSnackBar,private authService: AuthService) {
+  constructor(public snackbar: MatSnackBar,private authService: AuthService, private router: Router) {
 
   }
 
@@ -35,7 +36,19 @@ export class LoginFormComponent {
 
 
   login() {
-    
-    this.snackbar.open('Login Successful', 'Close', {})
+    const formData: any = this.loginForm.value;
+    this.authService.login(formData?.email, formData?.password)
+      .subscribe((res: any) => {
+        console.log(res)
+        this.snackbar.open('Login Successful', 'Close', {});
+        this.router.navigate(['/']);
+        // handle success message and redirect to next page
+      }, (err) => {
+        console.log(err)
+        this.snackbar.open(`Error \n ${err}`, 'Close', {});
+        // handle invalid user message
+      });
   }
-}
+    
+  }
+

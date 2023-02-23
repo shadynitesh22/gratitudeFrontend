@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post(`${environment.apiBaseUrl}/auth/login`, { email, password }).pipe(
+    return this.http.post(`${environment.apiBaseUrl}/login/`, { email, password }).pipe(
       map((res: any) => {
         const access_token = res?.data?.access_token;
         const refresh_token = res?.data?.refresh_token;
@@ -53,7 +53,7 @@ export class AuthService {
 
   generateNewTokens(): Observable<HttpEvent<any>> {
     const refresh_token = this.UserDataSubject.value?.refresh_token;
-    return this.http.post(`${environment.apiBaseUrl}/auth/refresh`, { refresh_token }).pipe(
+    return this.http.post(`${environment.apiBaseUrl}/refresh/`, { refresh_token }).pipe(
       map((res: any) => {
         const access_token = res?.data?.access_token;
         const refresh_token = res?.data?.refresh_token;
