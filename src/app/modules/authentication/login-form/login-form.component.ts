@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, } from '@angular/forms';
+import { FormControl, FormGroup, Validators, } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { TooltipPosition } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
@@ -25,17 +25,18 @@ export class LoginFormComponent {
 
 
   ngOnInit(): void {
-    this.loginForm = new FormGroup({
-      email: new FormControl,
-      password: new FormControl,
-      remrememberMe: new FormControl
-    })
-  }; s: any;
-  hide = true;
-  get passwordInput() { return this.loginForm.get('password'); }
+    this.loginForm = new FormGroup([]
+    )
+  } 
 
 
   login() {
+    console.log(this.loginForm.value)
+    if (this.loginForm.invalid) {
+      console.log(this.loginForm.invalid)
+      this.loginForm.markAllAsTouched();
+      return;
+    }
     const formData: any = this.loginForm.value;
     this.authService.login(formData?.email, formData?.password)
       .subscribe((res: any) => {

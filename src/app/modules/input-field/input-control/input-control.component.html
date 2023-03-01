@@ -1,20 +1,18 @@
 
-<mat-form-field class="form-input-field" [ngClass]="fieldClass">
+<mat-form-field *ngIf ="fromgroup" class="form-input-field" [ngClass]="fieldClass">
     <mat-label style="color:white">{{label}}</mat-label>
+
       <mat-icon style="color:white" role="presentation" matPrefix *ngIf="icon">{{icon}}</mat-icon>
-    <input fuseAutoFocusDirective class="ctrl" #inputStr *ngIf="valueType === 'text'" matInput
-       [formControl]="control" [placeholder]="placeholder" [type]="typeAttr"
+      
+    <input fuseAutoFocusDirective class="ctrl" #inputStr matInput 
+       [formControl]="controlValue" [placeholder]="placeholder" [type]="typeAttr"
       [ngClass]="formControlName + '-uiq'" autocomplete="off">
-    <input fuseAutoFocusDirective class="ctrl"
-      *ngIf="valueType !== 'text' && valueType !== 'number' && valueType !== 'currency' && valueType !== 'google_address'"
-      matInput [formControl]="control" [placeholder]="placeholder" [type]="typeAttr" [ngClass]="formControlName + '-uiq'">
-    <input fuseAutoFocusDirective class="ctrl" #inputNum *ngIf="valueType === 'number'" matInput [formControl]="control"
-      [placeholder]="placeholder" type="number" [ngClass]="formControlName + '-uiq'">
+   
       <mat-error class="red-700-fg"
-      *ngIf="control && !erroMsg && (control.hasError('required') || hasError(control,'whitespace'))">Field is
+      *ngIf="control && !erroMsg && (controlValue.hasError('required') || hasError(controlValue,'whitespace'))">Field is
       required. Please enter valid data</mat-error>
-    <mat-error class="red-700-fg" *ngIf="control && control.hasError('pattern')">Please enter valid data. {{validatorPatternSample}}</mat-error>
-    <mat-error class="red-700-fg" *ngIf="control && erroMsg && control.invalid">{{erroMsg}}</mat-error>
+    <mat-error class="red-700-fg" *ngIf="control && controlValue.hasError('pattern')">Please enter valid data. {{validatorPatternSample}}</mat-error>
+    <mat-error class="red-700-fg" *ngIf="control && erroMsg && controlValue.invalid">{{erroMsg}}</mat-error>
     <mat-hint>{{hint}}</mat-hint>
     
   </mat-form-field>

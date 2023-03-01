@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { InputControlComponent } from './input-control/input-control.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material/material.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 
@@ -14,6 +16,8 @@ import { MaterialModule } from 'src/app/material/material.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     MaterialModule
   ],exports:[
 

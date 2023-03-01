@@ -1,6 +1,6 @@
 
 import { Component, OnInit, Input, forwardRef, OnDestroy, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, Validators, FormControl, NG_VALIDATORS } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, Validators, FormControl, NG_VALIDATORS, FormGroup } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import * as moment from 'moment';
 
@@ -51,13 +51,17 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
   @Input('errorMessage') erroMsg !: string;
   @Input('dfd') dynamicData: any;
   @Input('mask') mask: any;
-  public typeAttr:any;
 
-  public control ! : FormControl;
-  
-  @Input() set controlErrors(errors: any) {
-    if (this.control) {
-      this.control.setErrors(errors || null);
+  public typeAttr:any;
+  @Input('fromgroup') fromgroup !: any;
+
+  public control ! : string;
+  public controlValue !: FormControl;
+
+  @Input('id') set setFormControl(control: any) {
+    if (control) {
+      console.log(control)
+      this.control = control;
     }
   }
   virtualKeyboardButton: any;
@@ -83,16 +87,16 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
 
 
   // Here you can get the value of the input field:
-  get value():any {
-    return this.control.value;
+  // get value():any {
+  //   // return this.control.value;
 
 
-  }
+  // }
   @Output () onAddressChange = new EventEmitter();
   
   // Here you can set the value of the input field:
   set value (value:any){
-    this.control.setValue(value);
+    // this.control.setValue(value);
     this.onChange(value);
     this.onTouched();
   }
@@ -113,7 +117,7 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
 
     
     }
-    this.control = new FormControl("",Validators.compose([
+    this.controlValue = new FormControl("",Validators.compose([
       this.required ? Validators.required : null,
       this.required ? this.noWhitespaceValidator : null,
       this.validators && this.validators.includes("minLength") && this.minLength ? Validators.minLength(this.minLength) : null,
@@ -129,7 +133,7 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
     ]));
     this.typeAttr = this.valueType === "number" ? "number":null;
     this.subscriptions.push(
-      this.control.valueChanges.subscribe(value =>{
+      this.controlValue.valueChanges.subscribe(value =>{
 
         if (this.valueType === 'number' && typeof value === 'string'){
           value = parseInt(value, 10);
@@ -142,8 +146,8 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
 
           value = value.trim();
         }
-        if (this.control.invalid){
-          this.control.markAllAsTouched();
+        if (this.controlValue.invalid){
+          this.controlValue.markAllAsTouched();
         }
         this.onChange(value);
         this.onTouched();
@@ -152,7 +156,10 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
 
 
     );
+    
+    this.fromgroup.addControl(this.control, this.controlValue);
    
+    console.log('this.fromgroup',this.fromgroup)
 
 
 
@@ -176,8 +183,8 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
 
 
     }
-    if (this.curentInput && this.curentInput.nativeElement.value ! == this.control.value ){
-      this.control.setValue(this.curentInput.nativeElement.value);
+    if (this.curentInput && this.curentInput.nativeElement.value ! == this.controlValue.value ){
+      this.controlValue.setValue(this.curentInput.nativeElement.value);
     }
 
   }
@@ -191,12 +198,12 @@ export class InputControlComponent implements ControlValueAccessor , AfterViewIn
 
         if (res == 'makeControlsTouched')
         {
-          this.control.markAllAsTouched();
-          this.control.setErrors(this.control.errors);
+          this.controlValue.markAllAsTouched();
+          this.controlValue.setErrors(this.controlValue.errors);
 
-          if (!this.control.errors){
+          if (!this.controlValue.errors){
 
-            this.control.setValue(this.control.value);
+            this.controlValue.setValue(this.controlValue.value);
 
           }
           
@@ -237,7 +244,7 @@ registerOnTouched(fn: any): void {
   this.onTouched = fn;
 }
 validate(_:FormControl):any{
-  return this.control.valid ? null:{[this.formControlName]:{valid:false}};
+  return this.controlValue.valid ? null:{[this.formControlName]:{valid:false}};
 }
 
 

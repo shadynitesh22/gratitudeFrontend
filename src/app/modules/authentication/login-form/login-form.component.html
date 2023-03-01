@@ -20,14 +20,14 @@
 
 		<mat-card>
 
-			<form class="loginForm" [formGroup]="loginForm">
+			<form class="loginForm" *ngIf="loginForm" [formGroup]="loginForm">
 				<br>
-				<app-input-control icon="person_outline" [appearance]="'standard'" [label]="'Email'"
+				<app-input-control [fromgroup]="loginForm"  [id]="'email'" icon="person_outline" [appearance]="'standard'" [label]="'Email'"
 					[placeholder]="'Enter your email'" [required]="true" [valueType]="'email'"
 					[required]="true"></app-input-control>
 
 				<br>
-				<app-input-control [icon]="'lock_outline'" [appearance]="'standard'" [label]="'Password'"
+				<app-input-control   [fromgroup]="loginForm" [id]="'password'" [icon]="'lock_outline'" [appearance]="'standard'" [label]="'Password'"
 					[placeholder]="'Enter your password'" [required]="true" [valueType]="'password'"
 					[minLength]="8"></app-input-control>
 
